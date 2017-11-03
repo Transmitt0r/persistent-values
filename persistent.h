@@ -5,44 +5,49 @@
 #ifndef PERSISTENTE_WERTE_PERSISTENT_H
 #define PERSISTENTE_WERTE_PERSISTENT_H
 
-#include <stdio.h>
 #include <string>
-#include <iostream>
 #include <fstream>
 
 template <class type>
 class persistent {
 private:
-    std::string dateipfad;
-    type wert;
-    char * buffer;
-    int length;
+    std::string dateipfad_;
+    type wert_;
 public:
-    persistent(std::string dateipfad_){
-        dateipfad = dateipfad_;
-        if (std::ifstream(dateipfad, std::ios::in | std::ios::binary)) {
-            std::ifstream infile;
-            infile.open(dateipfad, std::ios::in | std::ios::binary);
-            infile.seekg(0, infile.end);
-            length = infile.tellg();
-            infile.seekg(0, infile.beg);
-            buffer = new char [length];
-            infile.read(buffer, length);
-            infile.close();
+    /*Konstruktor: parameter ist der dateipfad als String*/
+    persistent(std::string dateipfad){
+        dateipfad_ = dateipfad;
+
+        /*Öffne den dateistream am ort dateipfad_, lesen und schreiben, binärdatei*/
+        std::fstream file(dateipfad_, std::ios::in | std::ios::out | std::ios::binary);
+        /*überprüft ob Datei vorhanden ist. vorhanden = geöffnet*/
+        if (file.is_open()) {
+            /*Bewege "Cursor" zum Anfang der Datei*/
+            file.seekg(0, file.beg);
+            /*Lese inhalt der Binärdatei in die Adresse von wert_ ein, typecast muss sein. Gelesenes datenpacket hat die größe sizeof(type)*/
+            file.read((char*) &wert_, sizeof(type));
         } else {
-            std::ofstream outfile;
-            outfile.open(dateipfad, std::ios::out | std::ios::binary);
-            outfile.close();
+            /*erstellt Datei, in dem sie geöffnet wird*/
+            file.open(dateipfad_, std::ios::out | std::ios::binary);
         }
+
+        /*Schließe dateistream*/
+        file.close();
     };
-    type operator=(type wert_){
-        wert = wert_;
-        std::ofstream outfile;
-        outfile.open(dateipfad, std::ios::out | std::ofstream::trunc);
-        outfile << wert;
+
+    /*Überladung des Zuweisungsoperators*/
+    type operator=(type wert){
+        wert_ = wert;
+
+        /*Öffne den dateistream wie im konstruktor, jedoch nur zum schreiben. trunc löscht den inhalt der datei, falls etwas darin steht*/
+        std::fstream outfile(dateipfad_, std::ios::out | std::ios::binary | std::ios::trunc);
+        /*Schreibe von der Adresse von wert_ in die Datei, ein Datenpacket der größe sizeof(type). auch hier muss der typecast wieder sein*/
+        outfile.write((char*)&wert_, sizeof(type));
+        /*Schließe den dateistream*/
         outfile.close();
-        return wert;
+        return wert_;
     };
+
     ~persistent(void){
     }
 };

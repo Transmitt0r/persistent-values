@@ -7,10 +7,10 @@
 //
 
 #include <iostream>
-#include "persistent.hpp"
+#include "persistent.h"
 
 int main(void) {
-    persistent<int> test("/Users/lukasgrotz/Documents/Coding/xCode/persistente-werte/persistente-werte/test.bin");
-    test = 12;
+    persistent<std::string> test("/Users/lukasgrotz/Documents/Coding/xCode/persistente-werte/test.bin");
+    test = "Hallo";
     return 0;
 }
