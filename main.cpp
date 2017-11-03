@@ -7,9 +7,10 @@
 //
 
 #include <iostream>
+#include "persistent.hpp"
 
-int main(int argc, const char * argv[]) {
-    // insert code here...
-    std::cout << "Hello, World!\n";
+int main(void) {
+    persistent<int> test("/Users/lukasgrotz/Documents/Coding/xCode/persistente-werte/persistente-werte/test.bin");
+    test = 12;
     return 0;
 }
