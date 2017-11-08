@@ -48,6 +48,10 @@ public:
         return wert_;
     };
 
+	type get_wert(){
+		return wert_;
+	};
+
     ~persistent(void){
     }
 };
