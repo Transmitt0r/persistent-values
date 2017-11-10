@@ -80,12 +80,6 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/Users/lukasgrotz/Documents/Coding/xCode/persistente-werte/Fahrzeug.cpp">
-			<Option target="persistente_werte"/>
-		</Unit>
-		<Unit filename="/Users/lukasgrotz/Documents/Coding/xCode/persistente-werte/Fahrzeug.h">
-			<Option target="persistente_werte"/>
-		</Unit>
 		<Unit filename="/Users/lukasgrotz/Documents/Coding/xCode/persistente-werte/Komplex.cpp">
 			<Option target="persistente_werte"/>
 		</Unit>

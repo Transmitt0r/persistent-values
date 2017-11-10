@@ -11,32 +11,36 @@
 template <class type>
 class persistent {
 private:
-    std::string dateipfad_;
-    type wert_;
+std::string dateipfad_;
+type wert_;
 public:
-    /*Konstruktor: parameter ist der dateipfad als String*/
-    persistent(std::string dateipfad){
+/*Konstruktor: parameter ist der dateipfad als String*/
+persistent(std::string dateipfad){
         dateipfad_ = dateipfad;
 
         /*Öffne den dateistream am ort dateipfad_, lesen und schreiben, binärdatei*/
         std::fstream file(dateipfad_, std::ios::in | std::ios::out | std::ios::binary);
         /*überprüft ob Datei vorhanden ist. vorhanden = geöffnet*/
         if (file.is_open()) {
-            /*Bewege "Cursor" zum Anfang der Datei*/
-            file.seekg(0, file.beg);
-            /*Lese inhalt der Binärdatei in die Adresse von wert_ ein, typecast muss sein. Gelesenes datenpacket hat die größe sizeof(type)*/
-            file.read((char*) &wert_, sizeof(type));
+                /*Bewege "Cursor" zum Anfang der Datei*/
+                file.seekg(0, file.beg);
+                /*Lese inhalt der Binärdatei in die Adresse von wert_ ein, typecast muss sein. Gelesenes datenpacket hat die größe sizeof(type)*/
+                file.read((char*) &wert_, sizeof(type));
         } else {
-            /*erstellt Datei, in dem sie geöffnet wird*/
-            file.open(dateipfad_, std::ios::out | std::ios::binary);
+                /*erstellt Datei, in dem sie geöffnet wird*/
+                file.open(dateipfad_, std::ios::out | std::ios::binary);
         }
 
         /*Schließe dateistream*/
         file.close();
-    };
+};
 
-    /*Überladung des Zuweisungsoperators*/
-    type operator=(type wert){
+/*Destruktor*/
+~persistent(void){
+}
+
+/*Überladung des Zuweisungsoperators*/
+type operator=(type wert){
         wert_ = wert;
 
         /*Öffne den dateistream wie im konstruktor, jedoch nur zum schreiben. trunc löscht den inhalt der datei, falls etwas darin steht*/
@@ -46,14 +50,23 @@ public:
         /*Schließe den dateistream*/
         outfile.close();
         return wert_;
-    };
-
-	type get_wert(){
-		return wert_;
-	};
-
-    ~persistent(void){
-    }
 };
+
+/*Getter*/
+type get_wert(){
+        return wert_;
+};
+
+/*Typecastüberladung für Zuweisungen*/
+operator type() {
+        return (type)wert_;
+};
+
+/*Überladung Ausgabeoperator*/
+friend std ::ostream & operator << (std::ostream & o, persistent & p){
+        return o<< p.get_wert();
+}
+};
+
 
 #endif //PERSISTENTE_WERTE_PERSISTENT_H

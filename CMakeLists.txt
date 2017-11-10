@@ -8,7 +8,6 @@ set(SOURCE_FILES
         persistent.h
         Komplex.h
         Komplex.cpp
-        Fahrzeug.h
-        Fahrzeug.cpp)
+        )
 
 add_executable(persistente_werte ${SOURCE_FILES})
