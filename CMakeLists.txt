@@ -5,6 +5,10 @@ set(CMAKE_CXX_STANDARD 11)
 
 set(SOURCE_FILES
         main.cpp
-        persistent.h)
+        persistent.h
+        Komplex.h
+        Komplex.cpp
+        Fahrzeug.h
+        Fahrzeug.cpp)
 
 add_executable(persistente_werte ${SOURCE_FILES})
